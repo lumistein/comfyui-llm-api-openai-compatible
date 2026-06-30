@@ -11,15 +11,16 @@ import urllib.error
 
 PLACEHOLDER = "{{prompt_here}}"
 NODE_DIR = os.path.dirname(os.path.abspath(__file__))
+PROMPTS_DIR = os.path.join(NODE_DIR, "prompts")
 
 
 def _load_prompt_template(filename: str = "prompt_body.txt") -> str:
-    """Load the ChatML prompt template from the node folder."""
-    path = os.path.join(NODE_DIR, filename)
+    """Load the ChatML prompt template from the prompts/ subfolder."""
+    path = os.path.join(PROMPTS_DIR, filename)
     if not os.path.isfile(path):
         raise FileNotFoundError(
             f"[LLM API Node] Prompt template not found: {path}\n"
-            "Please create a 'prompt_body.txt' file in the custom node folder."
+            "Please place your .txt template files inside the 'prompts/' subfolder."
         )
     with open(path, "r", encoding="utf-8") as f:
         return f.read()
@@ -142,12 +143,12 @@ class LLMApiNode:
     RETURN_NAMES = ("text",)
     OUTPUT_NODE = False
 
-    # List .txt files found in the node folder so the user can pick one
+    # List .txt files found in the prompts/ subfolder so the user can pick one
     @classmethod
     def _txt_files(cls) -> list[str]:
-        files = [
-            f for f in os.listdir(NODE_DIR) if f.endswith(".txt")
-        ]
+        if not os.path.isdir(PROMPTS_DIR):
+            return ["prompt_body.txt"]
+        files = sorted(f for f in os.listdir(PROMPTS_DIR) if f.endswith(".txt"))
         return files if files else ["prompt_body.txt"]
 
     @classmethod
