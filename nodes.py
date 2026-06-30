@@ -71,12 +71,17 @@ def _call_api(
 ) -> str:
     """Send a chat-completion request to an OpenAI-compatible endpoint."""
 
-    # Normalise base URL (strip trailing slash / /v1)
+    # Normalise base URL — accept any of these three forms:
+    #   1. https://api.openai.com                          → append /v1/chat/completions
+    #   2. https://api.openai.com/v1                       → append /chat/completions
+    #   3. https://api.cerebras.ai/v1/chat/completions     → use as-is
     base_url = base_url.rstrip("/")
-    if not base_url.endswith("/v1"):
-        base_url = base_url + "/v1"
-
-    url = f"{base_url}/chat/completions"
+    if base_url.endswith("/chat/completions"):
+        url = base_url
+    elif base_url.endswith("/v1"):
+        url = f"{base_url}/chat/completions"
+    else:
+        url = f"{base_url}/v1/chat/completions"
 
     payload = {
         "model": model,
@@ -161,9 +166,10 @@ class LLMApiNode:
                         "default": "https://api.openai.com",
                         "multiline": False,
                         "tooltip": (
-                            "Base URL of the OpenAI-compatible API endpoint.\n"
-                            "'/v1/chat/completions' will be appended automatically.\n"
-                            "Example: https://api.openai.com  or  http://localhost:11434"
+                            "Base URL — any of the three formats is accepted:\n"
+                            "  https://api.openai.com                        (base only)\n"
+                            "  https://api.openai.com/v1                     (with /v1)\n"
+                            "  https://api.cerebras.ai/v1/chat/completions   (full URL)"
                         ),
                     },
                 ),
