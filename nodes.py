@@ -184,10 +184,10 @@ class LLMApiNode:
                     },
                 ),
                 "prompt_file": (
-                    (cls._txt_files(),),
+                    cls._txt_files(),
                     {
                         "tooltip": (
-                            "ChatML-formatted template file inside the node folder.\n"
+                            "ChatML-formatted template file inside the prompts/ subfolder.\n"
                             "Place {{prompt_here}} where the user prompt should be inserted."
                         ),
                     },
