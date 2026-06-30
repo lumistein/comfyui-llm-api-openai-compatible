@@ -97,6 +97,8 @@ def _call_api(
         headers={
             "Content-Type": "application/json",
             "Authorization": f"Bearer {api_key}",
+            "User-Agent": "openai-python/1.59.0",
+            "Accept": "application/json",
         },
         method="POST",
     )
