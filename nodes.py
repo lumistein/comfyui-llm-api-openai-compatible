@@ -141,7 +141,7 @@ class LLMApiNode:
     FUNCTION = "run"
     RETURN_TYPES = ("STRING",)
     RETURN_NAMES = ("text",)
-    OUTPUT_NODE = False
+    OUTPUT_NODE = True
 
     # List .txt files found in the prompts/ subfolder so the user can pick one
     @classmethod
