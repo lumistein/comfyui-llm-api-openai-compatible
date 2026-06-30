@@ -1,0 +1,7 @@
+# comfyui-llm-api-openai-compatible
+# No third-party dependencies required.
+# This node uses Python's built-in urllib for HTTP requests.
+#
+# If you prefer to use the official openai SDK instead, install it with:
+#   pip install openai
+# and modify nodes.py accordingly.
