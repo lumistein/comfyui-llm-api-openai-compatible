@@ -82,6 +82,28 @@ Output only the prompt, nothing else.
 
 ---
 
+## 🎨 신규 기능 안내
+
+### 1. Vision (이미지 입력) 지원 🖼️
+`LLMApiNode`에 선택적(Optional) 입력 핀인 `image`가 추가되었습니다.
+- **사용 방법**: `로드 이미지(Load Image)` 노드 등에서 생성된 `IMAGE` 출력을 `image` 핀에 연결합니다.
+- **동작**: 입력된 이미지는 백엔드에서 자동으로 Base64 JPEG 형식으로 인코딩되며, ChatML 템플릿의 마지막 `user` 메시지에 OpenAI 규격(`image_url`)으로 추가되어 전송됩니다. 
+- **지원 모델**: `gpt-4o`, `gemini-1.5-pro`, `claude-3-5-sonnet` 등 멀티모달(Vision) 모델을 지정하면 이미지에 대한 질의응답이 가능해집니다.
+
+---
+
+### 2. 프롬프트 템플릿 매니저 노드 📝
+ComfyUI 내에서 직접 템플릿 파일을 조회, 편집, 추가, 삭제할 수 있는 `📝 LLM Prompt Template Manager` 노드가 추가되었습니다.
+- **액션(action)**:
+  - `Read/Select`: `filename`에서 고른 템플릿 파일을 읽어서 `template_content` 출력을 통해 텍스트로 보냅니다.
+  - `Save/Create`: 
+    - `new_filename`에 파일명(예: `my_prompt.txt`)을 쓰고 실행하면 새 템플릿을 만듭니다.
+    - `new_filename`이 비어 있으면, 현재 드롭다운으로 선택된 파일에 `content`에 입력한 텍스트를 덮어씁니다(수정).
+  - `Delete`: 선택된 파일을 삭제합니다.
+- **연동 팁**: 매니저 노드의 `template_content` 출력을 `Cloud LLM` 노드의 `template_override` 입력 핀에 바로 연결하면, 템플릿 파일을 매니저 노드에서 실시간으로 수정하며 즉시 테스트할 수 있어 개발 속도가 비약적으로 향상됩니다.
+
+---
+
 ## 주요 서비스 연동 예시
 
 | 서비스 | base_url | model 예시 |
