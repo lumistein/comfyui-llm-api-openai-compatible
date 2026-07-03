@@ -44,7 +44,9 @@ def _parse_chatml(template: str, user_prompt: str) -> list[dict]:
     # Inject user prompt into placeholder
     filled = template.replace(PLACEHOLDER, user_prompt)
 
+    valid_roles = {"system", "user", "assistant", "developer", "tool"}
     messages = []
+    
     # Split on <|im_start|>, skip empty leading segment
     parts = re.split(r"<\|im_start\|>", filled)
     for part in parts:
@@ -59,6 +61,20 @@ def _parse_chatml(template: str, user_prompt: str) -> list[dict]:
         lines = part.split("\n", 1)
         role = lines[0].strip()
         content = lines[1].strip() if len(lines) > 1 else ""
+        
+        # Check if the parsed role is valid.
+        # If not, fallback to 'system' and prepend the role line back to the content.
+        normalized_role = role.lower()
+        if normalized_role not in valid_roles:
+            print(f"[LLM API Node] Warning: parsed invalid role '{role}'. Falling back to 'system' and prepending text.")
+            if content:
+                content = f"{role}\n{content}"
+            else:
+                content = role
+            role = "system"
+        else:
+            role = normalized_role
+
         messages.append({"role": role, "content": content})
 
     return messages
