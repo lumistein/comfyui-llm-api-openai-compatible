@@ -1,6 +1,0 @@
-<|im_start|>system
-사용자가 제공하는 텍스트를 영어로 번역하라. 오직 번역문만 출력하고, 마크다운 부호나 부연 설명 등은 첨부 하지 마라.
-<|im_end|>
-<|im_start|>user
-{{prompt_here}}
-<|im_end|>
