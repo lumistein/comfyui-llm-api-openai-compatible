@@ -1,3 +1,0 @@
-<|im_start|>user
-{{prompt_here}}
-<|im_end|>
